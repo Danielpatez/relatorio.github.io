@@ -1,1 +1,231 @@
 # relatorio.github.io
+
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist de Entregas • Topografia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root,[data-theme="light"]{--bg:#f7f6f2;--surface:#fbfbf9;--surface-2:#efede6;--border:#d5d1c9;--text:#26231d;--muted:#6e6b64;--primary:#0d6267;--primary-2:#dbe9e7;--success:#3f7a23;--warn:#a45a28;--danger:#9d2f59;--radius:18px;--radius-sm:12px;--shadow:0 10px 30px rgba(38,35,29,.08);--font-display:'Instrument Serif',serif;--font-body:'Inter',sans-serif}
+    [data-theme="dark"]{--bg:#171614;--surface:#1e1c19;--surface-2:#292722;--border:#3d3a35;--text:#d7d3cb;--muted:#a5a096;--primary:#61a5ad;--primary-2:#26393b;--success:#75b34d;--warn:#de9a66;--danger:#d36e98;--shadow:0 14px 34px rgba(0,0,0,.24)}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--font-body)} a{color:inherit} button,input,textarea{font:inherit}
+    .app{max-width:1380px;margin:0 auto;padding:24px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+    .title h1{margin:0;font:clamp(2rem,4vw,3.7rem)/1 var(--font-display)} .title p{margin:.5rem 0 0;color:var(--muted);max-width:75ch}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:12px 16px;border-radius:14px;cursor:pointer;min-height:44px}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;margin-bottom:24px}.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.stat{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:14px}.stat strong{display:block;font-size:1.4rem}
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:20px}.sidebar{position:sticky;top:16px;align-self:start}.sidebar h3,.content h2{margin-top:0}
+    .group-list{display:grid;gap:8px;margin-top:14px}.group-btn{width:100%;text-align:left;padding:12px 14px;border-radius:14px;border:1px solid var(--border);background:var(--surface-2);cursor:pointer}.group-btn.active{background:var(--primary-2);border-color:color-mix(in srgb,var(--primary) 28%, var(--border));color:var(--text)}
+    .section{margin-bottom:20px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.chip{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:var(--primary-2);color:var(--primary);font-size:.88rem;font-weight:700}
+    .progress{height:12px;background:var(--surface-2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),#3a8ea0)}
+    .item{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:14px 0;border-top:1px solid color-mix(in srgb,var(--border) 75%, transparent)}.item:first-child{border-top:none}
+    .item input[type="checkbox"]{width:20px;height:20px;accent-color:var(--primary);margin-top:3px}.meta{font-size:.86rem;color:var(--muted);margin-top:4px}.tag{font-size:.75rem;padding:5px 8px;border-radius:999px;border:1px solid var(--border);background:var(--bg);white-space:nowrap}
+    .notes{width:100%;min-height:110px;padding:14px;border-radius:14px;border:1px solid var(--border);background:var(--bg);color:var(--text);resize:vertical}.legend{display:flex;gap:10px;flex-wrap:wrap}.legend span{font-size:.84rem;color:var(--muted)}.hidden{display:none}
+    @media (max-width:1024px){.hero,.layout,.stats{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="title">
+        <h1>Checklist de entregas</h1>
+        <p>Checklist HTML baseado na planilha <strong>Checklist-Topografia-EXECUTIVO.xlsx</strong>, com foco nos grupos <strong>06-TOP-DE</strong> e <strong>06-TOP-RE</strong> para conferência das nossas entregas de topografia executiva.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="themeBtn">Alternar tema</button>
+        <button class="btn" id="printBtn">Salvar em PDF</button>
+        <button class="btn" id="clearStorageBtn">Limpar salvamento</button>
+        <button class="btn" id="downloadHtmlBtn">Baixar HTML atualizado</button>
+        <button class="btn primary" id="copyBtn">Copiar pendências</button>
+      </div>
+    </div>
+    <section class="hero">
+      <div class="card">
+        <span class="chip">Baseado na planilha executiva</span>
+        <h2 style="margin:.8rem 0 0">Conferência rápida das entregas gráficas e documentais</h2>
+        <p style="color:var(--muted)">A estrutura foi extraída dos itens lidos no arquivo anexado, especialmente dos blocos de <strong>Planta</strong> e <strong>Relatório</strong>, incluindo representação gráfica, notas técnicas, marcos, drenagem, ortofotos, dados brutos, metodologia e ART.</p>
+        <div class="stats">
+          <div class="stat"><strong id="done">0</strong><span>itens concluídos</span></div>
+          <div class="stat"><strong id="total">30</strong><span>itens totais</span></div>
+          <div class="stat"><strong id="pending">30</strong><span>pendências</span></div>
+          <div class="stat"><strong id="percent">0%</strong><span>cobertura</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Observações da fonte</h3>
+        <p style="color:var(--muted)">A planilha mostra itens de conferência para topografia executiva em pelo menos duas frentes: <strong>06-TOP-DE</strong>, voltada a elementos de planta e representação gráfica, e <strong>06-TOP-RE</strong>, voltada ao relatório técnico e anexos associados.</p>
+        <div class="legend">
+          <span>Grupo 1: Planta / desenho</span>
+          <span>Grupo 2: Relatório / documentação</span>
+          <span>Uso: conferência interna antes da entrega</span><span>Salvamento local no navegador</span>
+        </div>
+      </div>
+    </section>
+    <section class="layout">
+      <aside class="sidebar card">
+        <h3>Navegação</h3>
+        <div class="progress" aria-label="Progresso geral"><span id="bar" style="width: 0%;"></span></div>
+        <div class="group-list">
+          <button class="group-btn active" data-target="all">Todos os itens</button>
+          <button class="group-btn" data-target="planta">06-TOP-DE • Planta</button>
+          <button class="group-btn" data-target="relatorio">06-TOP-RE • Relatório</button>
+          <button class="group-btn" data-target="pendentes">Somente pendências</button>
+        </div>
+        <div style="margin-top:18px">
+          <h3>Notas internas</h3>
+          <textarea id="notes" class="notes" placeholder="Ex.: faltou monografia da rede de apoio, revisar selo, conferir norte verdadeiro e anexar dados brutos compactados"></textarea>
+        </div>
+      </aside>
+      <div class="content">
+        <section class="card section dataset planta">
+          <div class="section-head"><div><h2>06-TOP-DE • Planta</h2><p style="margin:0;color:var(--muted)">Itens gráficos extraídos da aba com representação em prancha, legenda, selo, drenagem, OAC/OAE, ortofoto, layers e marcos.</p></div><span class="chip">Desenhos e representação</span></div>
+          <div class="item"><input type="checkbox" id="chk_1"><div><strong>Representação do eixo de vias existentes</strong><div class="meta">Item 6.1.1.1</div></div><span class="tag">Planta</span></div>
+          <div class="item"><input type="checkbox" id="chk_2"><div><strong>Representação do bordo de terraplenagem de taludes existentes</strong><div class="meta">Item 6.1.1.2</div></div><span class="tag">Planta</span></div>
+          <div class="item"><input type="checkbox" id="chk_3"><div><strong>Representação dos offsets de taludes existentes</strong><div class="meta">Item 6.1.1.3</div></div><span class="tag">Planta</span></div>
+          <div class="item"><input type="checkbox" id="chk_4"><div><strong>Curvas de nível com diferenciação entre mestras e secundárias e cotas coerentes</strong><div class="meta">Itens 6.1.1.4 e 6.1.1.5</div></div><span class="tag">Altimetria</span></div>
+          <div class="item"><input type="checkbox" id="chk_5"><div><strong>Norte verdadeiro e malha UTM georreferenciada compatível com a escala</strong><div class="meta">Item 6.1.1.6</div></div><span class="tag">Georreferenciamento</span></div>
+          <div class="item"><input type="checkbox" id="chk_6"><div><strong>Faixa de domínio com distâncias ao eixo e cerca de cadastro, quando aplicável</strong><div class="meta">Item 6.1.1.7</div></div><span class="tag">Faixa</span></div>
+          <div class="item"><input type="checkbox" id="chk_7"><div><strong>Planta-chave e articulação das pranchas</strong><div class="meta">Item 6.1.1.8</div></div><span class="tag">Prancha</span></div>
+          <div class="item"><input type="checkbox" id="chk_8"><div><strong>Notas técnicas com sistema de coordenadas, fuso, localização e equipamentos utilizados</strong><div class="meta">Item 6.1.1.9</div></div><span class="tag">Notas</span></div>
+          <div class="item"><input type="checkbox" id="chk_9"><div><strong>Quadro de revisões preenchido</strong><div class="meta">Item 6.1.1.10</div></div><span class="tag">Controle</span></div>
+          <div class="item"><input type="checkbox" id="chk_10"><div><strong>Selo do documento completo com numeração, data, escala, status, logos e demais campos</strong><div class="meta">Item 6.1.1.11</div></div><span class="tag">Selo</span></div>
+          <div class="item"><input type="checkbox" id="chk_11"><div><strong>Legenda completa e compatível com os elementos representados</strong><div class="meta">Itens 6.1.1.12 e 6.1.1.13</div></div><span class="tag">Legenda</span></div>
+          <div class="item"><input type="checkbox" id="chk_12"><div><strong>Sentido importação/exportação com seta e divisão de pranchas</strong><div class="meta">Itens 6.1.1.14 e 6.1.1.15</div></div><span class="tag">Operação</span></div>
+          <div class="item"><input type="checkbox" id="chk_13"><div><strong>Drenagem superficial e demais dispositivos representados com layer e fluxo d'água</strong><div class="meta">Itens 6.1.1.16 a 6.1.1.18</div></div><span class="tag">Drenagem</span></div>
+          <div class="item"><input type="checkbox" id="chk_14"><div><strong>AMVs, acessos, passagens em nível e OAEs/OACs existentes representados</strong><div class="meta">Itens 6.1.1.19 a 6.1.1.22</div></div><span class="tag">Via permanente</span></div>
+          <div class="item"><input type="checkbox" id="chk_15"><div><strong>Ortofotos georreferenciadas inseridas, quando aplicável</strong><div class="meta">Item 6.1.1.23</div></div><span class="tag">Base</span></div>
+          <div class="item"><input type="checkbox" id="chk_16"><div><strong>Pontos COGO e vetorização por layers para base planialtimétrica cadastral</strong><div class="meta">Itens 6.1.1.24 e 6.1.1.25</div></div><span class="tag">Cadastro</span></div>
+          <div class="item"><input type="checkbox" id="chk_17"><div><strong>Muros, contenções, houses e demais elementos lineares vetorizados</strong><div class="meta">Itens 6.1.1.26 a 6.1.1.29</div></div><span class="tag">Elementos</span></div>
+          <div class="item"><input type="checkbox" id="chk_18"><div><strong>Uso e ocupação do solo, elementos pontuais, edificações e cursos d'água representados</strong><div class="meta">Itens 6.1.1.30 a 6.1.1.33</div></div><span class="tag">Contexto</span></div>
+          <div class="item"><input type="checkbox" id="chk_19"><div><strong>Marcos topográficos e referências de nível em planta, com tabela de apoio</strong><div class="meta">Itens 6.1.1.34 a 6.1.1.36</div></div><span class="tag">Marcos</span></div>
+          <div class="item"><input type="checkbox" id="chk_20"><div><strong>Aderência à NBR 13133, assinatura do RT, CREA e número de ART</strong><div class="meta">Itens 6.1.1.37 a 6.1.1.39</div></div><span class="tag">Conformidade</span></div>
+        </section>
+        <section class="card section dataset relatorio">
+          <div class="section-head"><div><h2>06-TOP-RE • Relatório</h2><p style="margin:0;color:var(--muted)">Itens documentais da aba de relatório, com serviços executados, monografias, validação de base, dados brutos, metodologia e orientações de locação.</p></div><span class="chip">Relatório técnico</span></div>
+          <div class="item"><input type="checkbox" id="chk_21"><div><strong>Descrição dos serviços realizados</strong><div class="meta">Item 6.1.2.1</div></div><span class="tag">Relatório</span></div>
+          <div class="item"><input type="checkbox" id="chk_22"><div><strong>Monografia dos marcos topográficos e marcos de apoio implantados</strong><div class="meta">Item 6.1.2.2</div></div><span class="tag">Monografia</span></div>
+          <div class="item"><input type="checkbox" id="chk_23"><div><strong>Monografia da rede de apoio</strong><div class="meta">Item 6.1.2.3</div></div><span class="tag">Rede</span></div>
+          <div class="item"><input type="checkbox" id="chk_24"><div><strong>Tabela com áreas por trecho em caso de complementação do levantamento</strong><div class="meta">Item 6.1.2.4</div></div><span class="tag">Áreas</span></div>
+          <div class="item"><input type="checkbox" id="chk_25"><div><strong>Capítulo de validação de bases topográficas fornecidas pela Rumo</strong><div class="meta">Item 6.1.2.5</div></div><span class="tag">Validação</span></div>
+          <div class="item"><input type="checkbox" id="chk_26"><div><strong>Dados brutos de estação total, GPS RTK ou tecnologia equivalente anexados em arquivo compactado</strong><div class="meta">Item 6.1.2.6</div></div><span class="tag">Dados brutos</span></div>
+          <div class="item"><input type="checkbox" id="chk_27"><div><strong>Metodologia de processamento com softwares utilizados</strong><div class="meta">Item 6.1.2.7</div></div><span class="tag">Metodologia</span></div>
+          <div class="item"><input type="checkbox" id="chk_28"><div><strong>Orientações para locação de obra, rede geodésica, rastreio GNSS, geóide, RBMC e transporte de coordenadas</strong><div class="meta">Item 6.1.2.8</div></div><span class="tag">Locação</span></div>
+          <div class="item"><input type="checkbox" id="chk_29"><div><strong>Assinatura e número CREA do responsável técnico</strong><div class="meta">Item 6.1.2.9</div></div><span class="tag">RT</span></div>
+          <div class="item"><input type="checkbox" id="chk_30"><div><strong>Número da ART</strong><div class="meta">Item 6.1.2.10</div></div><span class="tag">ART</span></div>
+        </section>
+      </div>
+    </section>
+  </div>
+  <script>
+    const STORAGE_KEY = 'checklist-topografia-entregas-v2';
+    const allChecks=[...document.querySelectorAll('.item input[type="checkbox"]')],groupBtns=[...document.querySelectorAll('.group-btn')],datasets=[...document.querySelectorAll('.dataset')];
+    const done=document.getElementById('done'),total=document.getElementById('total'),pending=document.getElementById('pending'),percent=document.getElementById('percent'),bar=document.getElementById('bar'),notes=document.getElementById('notes');
+
+    allChecks.forEach((cb,idx)=>{ if(!cb.id) cb.id = 'chk_' + (idx+1); });
+
+    function storageAvailable(){
+      try {
+        const x='__test__';
+        localStorage.setItem(x,x);
+        localStorage.removeItem(x);
+        return true;
+      } catch(e){ return false; }
+    }
+
+    function saveState(){
+      if(!storageAvailable()) return;
+      const state = {
+        checks: Object.fromEntries(allChecks.map(cb => [cb.id, cb.checked])),
+        notes: notes.value || '',
+        theme: document.documentElement.getAttribute('data-theme') || 'light'
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState(){
+      if(!storageAvailable()) return;
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      try {
+        const state = JSON.parse(raw);
+        if(state.checks){
+          allChecks.forEach(cb => { cb.checked = !!state.checks[cb.id]; });
+        }
+        if(typeof state.notes === 'string') notes.value = state.notes;
+        if(state.theme) document.documentElement.setAttribute('data-theme', state.theme);
+      } catch(e){}
+    }
+
+    function updateStats(){
+      const d=allChecks.filter(c=>c.checked).length,t=allChecks.length,p=Math.round((d/t)*100);
+      done.textContent=d; total.textContent=t; pending.textContent=t-d; percent.textContent=p+'%'; bar.style.width=p+'%';
+    }
+
+    loadState();
+    updateStats();
+
+    allChecks.forEach(c=>c.addEventListener('change',()=>{ updateStats(); saveState(); }));
+    notes.addEventListener('input', saveState);
+
+    groupBtns.forEach(btn=>btn.addEventListener('click',()=>{
+      groupBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const target=btn.dataset.target;
+      if(target==='all'){
+        datasets.forEach(s=>s.classList.remove('hidden'));
+        document.querySelectorAll('.item').forEach(i=>i.classList.remove('hidden'));
+      }else if(target==='pendentes'){
+        datasets.forEach(s=>s.classList.remove('hidden'));
+        document.querySelectorAll('.item').forEach(i=>i.classList.toggle('hidden',i.querySelector('input').checked));
+      }else{
+        datasets.forEach(s=>s.classList.toggle('hidden',!s.classList.contains(target)));
+        document.querySelectorAll('.item').forEach(i=>i.classList.remove('hidden'));
+      }
+    }));
+
+    document.getElementById('themeBtn').addEventListener('click',()=>{
+      const root=document.documentElement;
+      root.setAttribute('data-theme',root.getAttribute('data-theme')==='dark'?'light':'dark');
+      saveState();
+    });
+
+    document.getElementById('printBtn').addEventListener('click',()=>window.print());
+    document.getElementById('clearStorageBtn').addEventListener('click',()=>{
+      if(storageAvailable()) localStorage.removeItem(STORAGE_KEY);
+      allChecks.forEach(c=>c.checked=false);
+      notes.value='';
+      updateStats();
+      alert('Salvamento local apagado.');
+    });
+
+    document.getElementById('copyBtn').addEventListener('click',()=>{
+      const pend=[...document.querySelectorAll('.item')].filter(i=>!i.querySelector('input').checked).map(i=>'- '+i.querySelector('strong').textContent);
+      const txt=['Pendências de entrega - Topografia','',...pend,'','Notas:',notes.value||'Sem notas'].join('\n');
+      navigator.clipboard.writeText(txt).then(()=>alert('Pendências copiadas.'));
+    });
+
+    document.getElementById('downloadHtmlBtn').addEventListener('click',()=>{
+      allChecks.forEach(cb => { if(cb.checked) cb.setAttribute('checked','checked'); else cb.removeAttribute('checked'); });
+      notes.textContent = notes.value;
+      notes.innerHTML = notes.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      saveState();
+      const doctype='<!DOCTYPE html>\n';
+      const source = doctype + document.documentElement.outerHTML;
+      const blob = new Blob([source], {type:'text/html;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+      a.href = url;
+      a.download = 'checklist-entregas-topografia-' + stamp + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    });
+  </script>
+
+
+</body></html>
